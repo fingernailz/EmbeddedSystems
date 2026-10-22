@@ -8,20 +8,22 @@ int main(void)
     RCC->AHB1ENR |= (1U << 2);  // Enable clock for GPIOC (1U << 2 corresponds to GPIOCEN)
 
     // 2- Set PC14 as output
-    GPIOC->MODER &= ~(0x3 << 28); // Clear mode bits for PC14 (28 is the bit position)
-    GPIOC->MODER |= (0x1 << 28);  // Set PC14 to output mode (01)
+    GPIOC->MODER &= ~(3U << 28); // Clear mode bits for PC14 (28 is the bit position)
+    GPIOC->MODER |= (1U << 28);  // Set PC14 to output mode (01)
 
     // 3- Set PA6 and PB10 as input
-    GPIOA->MODER &= ~(0x3 << 12); // Set PA6 to input mode (12 is the bit position for PA6)
-    GPIOB->MODER &= ~(0x3 << 20); // Set PB10 to input mode (20 is the bit position for PB10)
+    GPIOA->MODER &= ~(3U << 12); // Set PA6 to input mode (12 is the bit position for PA6)
+    GPIOB->MODER &= ~(3U << 20); // Set PB10 to input mode (20 is the bit position for PB10)
 
     // Enable internal pull-up resistors for PA6 and PB10
-    GPIOA->PUPDR &= ~(0x3 << 12); // Clear pull-up/pull-down bits for PA6
-    GPIOA->PUPDR |= (0x1 << 12);  // Set pull-up for PA6 (01)
+    GPIOA->PUPDR &= ~(3U << 12); // Clear pull-up/pull-down bits for PA6
+    GPIOA->PUPDR |= (1U << 12);  // Set pull-up for PA6 (01)
 
-    GPIOB->PUPDR &= ~(0x3 << 20); // Clear pull-up/pull-down bits for PB10
-    GPIOB->PUPDR |= (0x1 << 20);  // Set pull-up for PB10 (01)
+    GPIOB->PUPDR &= ~(3U << 20); // Clear pull-up/pull-down bits for PB10
+    GPIOB->PUPDR |= (1U << 20);  // Set pull-up for PB10 (01)
 
+
+    //INTERUPT config
     // 4- Enable SYSCFG clock
     RCC->APB2ENR |= (1U << 14); // Enable SYSCFG clock (1U << 14 corresponds to SYSCFGEN)
 
@@ -32,6 +34,22 @@ int main(void)
     SYSCFG->EXTICR[2] &= ~(0xF << 8); // Clear EXTI10 configuration (PB10)
     SYSCFG->EXTICR[2] |= (0x1 << 8);  // Set PB10 as the source input for EXTI10
 
+    /*
+    REFERENCE EXAMPLES
+    SYSCFG->EXTICR[1] &= ~(0xF << 4);  // Clear EXTI5 configuration
+    SYSCFG->EXTICR[1] |=  (0x2 << 4);  // Select PC5 for EXTI5
+
+    // Configure PB3 as the source input for EXTI3
+    SYSCFG->EXTICR[0] &= ~(0xF << 12); // Clear EXTI3 configuration
+    SYSCFG->EXTICR[0] |=  (0x1 << 12); // Select PB3 for EXTI3
+
+    // Configure PC12 as the source input for EXTI12
+    SYSCFG->EXTICR[3] &= ~(0xF << 0);  // Clear EXTI12 configuration
+    SYSCFG->EXTICR[3] |=  (0x2 << 0);  // Select PC12 for EXTI12
+
+    EXTI[N] 0->0-3  1->4-7  2->8-11  3->12-15
+
+    */
     // 6- Enable the Interrupt Mask register
     EXTI->IMR |= (1 << 6);   // Unmask EXTI line 6 (PA6)
     EXTI->IMR |= (1 << 10);  // Unmask EXTI line 10 (PB10)

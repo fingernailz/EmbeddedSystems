@@ -4,10 +4,10 @@ int main(void) {
    RCC->AHB1ENR |= (1 << 2);  // Bit 2 enables the clock for GPIOC
     
     // Clear pin mode for PC14 (GPIOC pin 14)
-    GPIOC->MODER &= ~0x30000000;
+    GPIOC->MODER &= ~(3U << 28);
     
     // Set PC14 to output mode
-    GPIOC->MODER |= 0x10000000;
+    GPIOC->MODER |= (1U << 28);
     
     // Configure SysTick to generate 1Hz toggle
     SysTick->LOAD = 16000000 - 1;  // Reload with number of clocks per second (assuming 16 MHz clock)

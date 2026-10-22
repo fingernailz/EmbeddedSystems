@@ -5,15 +5,15 @@ void init_port() {
 	RCC->AHB1ENR |= (1U<<1);
 	RCC->AHB1ENR |= (1U<<2);
 	
-	GPIOA->MODER |= (0U<<0);
-	GPIOA->MODER |= (0U<<12);
-	GPIOB->MODER |= (1U<<18);
-	GPIOC->MODER |= (1U<<28);
+	GPIOA->MODER |= (0U<<0);//pa0
+	GPIOA->MODER |= (0U<<12);//pa6
+	GPIOB->MODER |= (1U<<18);//pb9
+	GPIOC->MODER |= (1U<<28);//pc14
 	
 	GPIOA->PUPDR &= ~(3U<<0);
-  GPIOA->PUPDR |= (1U<<0);
+    GPIOA->PUPDR |= (1U<<0);
 	GPIOA->PUPDR &= ~(3U<<12);
-  GPIOA->PUPDR |= (1U<<12);
+    GPIOA->PUPDR |= (1U<<12);
 }	
 
 int main(void) {
